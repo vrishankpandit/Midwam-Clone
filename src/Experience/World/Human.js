@@ -4,6 +4,7 @@ import vertex from './Shaders/vertex.glsl'
 import fragment from './Shaders/fragment.glsl'
 import Time from '../Utils/Time.js'
 
+
 // console.log(vertex)
 
 export default class Human{
@@ -12,6 +13,7 @@ export default class Human{
         this.scene=this.experiance.scene;
         this.resources=this.experiance.resources
         this.time=this.experiance.time;
+        this.renderer=this.experiance.renderer.instance
         
 
         this.instance=this.resources.items.humanModel
@@ -33,19 +35,34 @@ export default class Human{
     }
 
     setMaterial(){
-        this.mesh.material=new THREE.ShaderMaterial({
-            vertexShader:vertex,
-            fragmentShader:fragment,
-            
-            uniforms:{
-                uTime:{value:this.time.elapsed}
-            }
+        this.pmremgenerator = new THREE.PMREMGenerator(this.renderer)
+        this.pmremgenerator.compileEquirectangularShader()
+
+        this.envMapTexture = this.resources.items.envMap
+        this.envMap=this.pmremgenerator.fromEquirectangular(this.envMapTexture).texture;
+
+        console.log(this.envMap)
+
+        this.mesh.material=new THREE.MeshStandardMaterial({
+            metalness:1,
+            roughness:0.2,
+            envMap:this.envMap,
         })
+
+
+        // this.mesh.material=new THREE.ShaderMaterial({
+        //     vertexShader:vertex,
+        //     fragmentShader:fragment,
+            
+        //     uniforms:{
+        //         uTime:{value:this.time.elapsed}
+        //     }
+        // })
     }
     
     update(){
-        console.log(this.time.elapsed)
-        this.mesh.material.uniforms.uTime.value=this.time.elapsed;
+        // console.log(this.time.elapsed)
+        // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
     }
 
     

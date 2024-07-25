@@ -4,6 +4,11 @@ export default [
         name:'humanModel',
         type:'gltfModel',
         path:'models/Human/human.glb'
+    },
+    {
+        name:'envMap',
+        type:'texture',
+        path:'textures/environmentMap/environment-map.jpg'
     }
     // {
     //     name: 'environmentMapTexture',
