@@ -29,6 +29,7 @@ export default class Time extends EventEmitter
 
         window.requestAnimationFrame(() =>
         {
+            
             this.tick()
             // console.log(this.delta)
         })

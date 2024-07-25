@@ -22,9 +22,12 @@ export default class World
             // this.environment = new Environment()
         })
     }
-
+    
     update()
     {
+        if(this.human)
+            this.human.update();
+
         // if(this.fox)
         //     this.fox.update()
     }
