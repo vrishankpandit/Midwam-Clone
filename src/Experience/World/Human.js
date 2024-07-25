@@ -14,6 +14,7 @@ export default class Human{
         this.resources=this.experiance.resources
         this.time=this.experiance.time;
         this.renderer=this.experiance.renderer.instance
+        this.debug=this.experiance.debug
         
 
         this.instance=this.resources.items.humanModel
@@ -25,10 +26,11 @@ export default class Human{
 
     addModel(){
         this.model = this.instance.scene;
-        this.model.scale.set(0.2,0.2,0.2)
+        this.model.scale.set(0.35,0.35,0.35)
         this.mesh=this.model.children[0]
         this.mesh.geometry.center()
 
+        this.mesh.rotation.y=-Math.PI/2;
        
         console.log(this.mesh)  
         this.scene.add(this.model)
@@ -45,9 +47,11 @@ export default class Human{
 
         this.mesh.material=new THREE.MeshStandardMaterial({
             metalness:1,
-            roughness:0.2,
+            roughness:0.28,
             envMap:this.envMap,
         })
+
+        
 
 
         // this.mesh.material=new THREE.ShaderMaterial({
@@ -61,6 +65,7 @@ export default class Human{
     }
     
     update(){
+        // this.mesh.rotation.y=this.time.elapsed * 0.001;
         // console.log(this.time.elapsed)
         // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
     }

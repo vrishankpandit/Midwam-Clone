@@ -10,6 +10,7 @@ export default class Renderer
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.camera = this.experience.camera
+        this.debug=this.experience.debug
 
         this.setInstance()
     }
@@ -22,13 +23,19 @@ export default class Renderer
         })
         // this.instance.physicallyCorrectLights = true
         // this.instance.outputEncoding = THREE.sRGBEncoding
-        // this.instance.toneMapping = THREE.CineonToneMapping
-        // this.instance.toneMappingExposure = 1.75
         // this.instance.shadowMap.enabled = true
         // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-        this.instance.setClearColor('#e9ece9')
+
+        this.instance.toneMapping = THREE.ACESFilmicToneMapping
+        this.instance.toneMappingExposure = 1.00
+        this.instance.setClearColor('#2c2c2c')
         this.instance.setSize(this.sizes.width, this.sizes.height)
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
+
+        //Debug
+        if(this.debug.active){
+            this.debug.ui.add(this.instance,'toneMappingExposure').min(0).max(2).step(0.001)
+        }
     }
 
     resize()
