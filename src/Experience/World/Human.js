@@ -43,17 +43,46 @@ export default class Human{
         this.envMapTexture = this.resources.items.envMap
         this.envMap=this.pmremgenerator.fromEquirectangular(this.envMapTexture).texture;
 
-        console.log(this.envMap)
+        
 
-        this.mesh.material=new THREE.MeshStandardMaterial({
+        this.m=new THREE.MeshStandardMaterial({
             metalness:1,
             roughness:0.28,
             envMap:this.envMap,
         })
-
         
+        this.m.onBeforeCompile=(shader)=>{
+            
+            shader.uniforms.uTime = {value : 0};
+            shader.fragmentShader =`
+                uniform float uTime;
+                mat4 rotationMatrix(vec3 axis, float angle) {
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+    
+    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
+                0.0,                                0.0,                                0.0,                                1.0);
+}
 
+vec3 rotate(vec3 v, vec3 axis, float angle) {
+	mat4 m = rotationMatrix(axis, angle);
+	return (m * vec4(v, 1.0)).xyz;
+}
+            `
+            + shader.fragmentShader;
 
+            
+            this.m.userData.shader=shader;
+            
+        }
+        
+        
+        this.mesh.material=this.m
+               
         // this.mesh.material=new THREE.ShaderMaterial({
         //     vertexShader:vertex,
         //     fragmentShader:fragment,
@@ -65,7 +94,18 @@ export default class Human{
     }
     
     update(){
-        // this.mesh.rotation.y=this.time.elapsed * 0.001;
+        if(this.mesh){
+            this.mesh.rotation.y=this.time.elapsed * 0.001;
+            if(this.m.userData.shader){
+                this.m.userData.shader.uniforms.uTime.value=this.time.elapsed;
+                // console.log(this.m.userData.shader.uniforms.uTime.value)
+            }
+        }
+        // if(this.mesh){
+        //     if(this.m.userData){
+        //         console.log(this.m.userData)
+        //     }
+        // }
         // console.log(this.time.elapsed)
         // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
     }

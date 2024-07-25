@@ -25,8 +25,10 @@ export default class World
     
     update()
     {
-        if(this.human)
+        if(this.human){
             this.human.update();
+        }
+        
 
         // if(this.fox)
         //     this.fox.update()
