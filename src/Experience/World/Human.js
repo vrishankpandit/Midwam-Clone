@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Experience from '../Experience.js'
 import vertex from './Shaders/vertex.glsl'
 import fragment from './Shaders/fragment.glsl'
-import Time from '../Utils/Time.js'
+
 
 
 // console.log(vertex)
@@ -47,9 +47,9 @@ export default class Human{
 
         this.m=new THREE.MeshStandardMaterial({
             metalness:1,
-            roughness:0.28,
-            envMap:this.envMap,
+            roughness:0.28
         })
+        this.m.envMap=this.envMap
         
         this.m.onBeforeCompile=(shader)=>{
             
@@ -75,6 +75,57 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
             `
             + shader.fragmentShader;
 
+            shader.fragmentShader=shader.fragmentShader.replace(
+                `#include <envmap_physical_pars_fragment>`,
+                `
+                    #if defined( USE_ENVMAP )
+
+	vec3 getIBLIrradiance( const in vec3 normal ) {
+
+		#if defined( ENVMAP_TYPE_CUBE_UV )
+
+			vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
+
+			vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
+
+			return PI * envMapColor.rgb * envMapIntensity;
+
+		#else
+
+			return vec3( 0.0 );
+
+		#endif
+
+	}
+
+	vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
+
+		#if defined( ENVMAP_TYPE_CUBE_UV )
+
+			vec3 reflectVec = reflect( - viewDir, normal );
+
+			// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
+			reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
+
+			reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
+
+            reflectVec = rotate(reflectVec,vec3(1.0,0.0,0.0),uTime);
+
+			vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
+
+			return envMapColor.rgb * envMapIntensity;
+
+		#else
+
+			return vec3( 0.0 );
+
+		#endif
+
+	}
+
+#endif
+                `)
+
             
             this.m.userData.shader=shader;
             
@@ -95,10 +146,10 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
     
     update(){
         if(this.mesh){
-            this.mesh.rotation.y=this.time.elapsed * 0.001;
+            // this.mesh.rotation.y=this.time.elapsed * 0.001;
             if(this.m.userData.shader){
-                this.m.userData.shader.uniforms.uTime.value=this.time.elapsed;
-                // console.log(this.m.userData.shader.uniforms.uTime.value)
+                this.mesh.material.userData.shader.uniforms.uTime.value = this.time.elapsed * 0.001;
+                // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
             }
         }
         // if(this.mesh){
