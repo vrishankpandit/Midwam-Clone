@@ -150,7 +150,7 @@ float snoise(vec3 v){
 
             vec3 finalColor = background + difference;
 
-            vec3 finalfinalColor=mix(color.rgb,finalColor,progress);
+            vec3 finalfinalColor=mix(combinedColor.rgb,finalColor,progress);
 
 			// gl_FragColor = color;
 			gl_FragColor = vec4(vec3(finalfinalColor),1.0);
