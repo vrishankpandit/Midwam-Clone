@@ -127,6 +127,7 @@ float snoise(vec3 v){
 			vec4 color = texture2D( tDiffuse, vUv );
 
             float lineOffset=snoise(vec3(0.0,10.0,uTime*0.5));
+            float holoIntensity= 0.3 + 0.1*snoise(vec3(0.0,30.0,uTime));
 
 			// float n=snoise(vec3(vUv.xy *100.0,uTime));
 
@@ -135,10 +136,20 @@ float snoise(vec3 v){
 
             vec3 hologram=texture2D( tDiffuse, uv ).rgb;
 
-            vec3 combinedColor = color.rgb + hologram * 0.5;
+            vec3 background=vec3(0.0,0.65,1.0)*0.3;
+
+            vec3 combinedColor = color.rgb + hologram * holoIntensity;
+            vec3 luminance=vec3(0.299,0.587,0.114);
+
+            float lumFront=dot(luminance,combinedColor);
+            float lumBack=dot(luminance,background);
+
+            float difference=lumFront-lumBack;
+
+            vec3 finalColor = background + difference;
 
 			// gl_FragColor = color;
-			gl_FragColor = vec4(vec3(combinedColor),1.0);
+			gl_FragColor = vec4(vec3(finalColor),1.0);
 
 
 		}`
