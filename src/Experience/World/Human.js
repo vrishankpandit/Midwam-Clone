@@ -146,7 +146,7 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
     
     update(){
         if(this.mesh){
-            // this.mesh.rotation.y=this.time.elapsed * 0.001;
+            this.mesh.rotation.y=this.time.elapsed * -0.001;
             if(this.m.userData.shader){
                 this.mesh.material.userData.shader.uniforms.uTime.value = this.time.elapsed * 0.001;
                 // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)

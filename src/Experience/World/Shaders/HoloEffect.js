@@ -14,6 +14,7 @@ const HoloEffectShader = {
 
 		'tDiffuse': { value: null },
 		'uSize': { value: new Vector2( window.innerWidth, window.innerHeight ) },
+        'progress':{value:0.0},
 		'center': { value: new Vector2( 0.5, 0.5 ) },
 		'angle': { value: 1.57 },
 		'scale': { value: 1.0 },
@@ -37,6 +38,7 @@ const HoloEffectShader = {
 		uniform vec2 center;
 		uniform float angle;
 		uniform float scale;
+        uniform float progress;
 		uniform vec2 uSize;
         uniform float uTime;
 
@@ -148,8 +150,10 @@ float snoise(vec3 v){
 
             vec3 finalColor = background + difference;
 
+            vec3 finalfinalColor=mix(color.rgb,finalColor,progress);
+
 			// gl_FragColor = color;
-			gl_FragColor = vec4(vec3(finalColor),1.0);
+			gl_FragColor = vec4(vec3(finalfinalColor),1.0);
 
 
 		}`

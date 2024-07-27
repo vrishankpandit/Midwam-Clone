@@ -1,4 +1,5 @@
 import Experience from '../Experience.js'
+import Axeshelper from './AxesHelper.js'
 import Environment from './Environment.js'
 import Human from './Human.js'
 // import Floor from './Floor.js'
@@ -17,6 +18,7 @@ export default class World
         {
             // Setup
             this.human=new Human();
+            this.axesHelper=new Axeshelper();
             // this.floor = new Floor()
             // this.fox = new Fox()
             // this.environment = new Environment()
