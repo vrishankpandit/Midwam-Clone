@@ -18,7 +18,7 @@ export default class World
         {
             // Setup
             this.human=new Human();
-            this.axesHelper=new Axeshelper();
+            // this.axesHelper=new Axeshelper();
             // this.floor = new Floor()
             // this.fox = new Fox()
             // this.environment = new Environment()
