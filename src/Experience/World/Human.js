@@ -54,8 +54,10 @@ export default class Human{
         this.m.onBeforeCompile=(shader)=>{
             
             shader.uniforms.uTime = {value : 0};
+            shader.uniforms.speedFactor= {value : 1.0};
             shader.fragmentShader =`
                 uniform float uTime;
+                uniform float speedFactor;
                 mat4 rotationMatrix(vec3 axis, float angle) {
     axis = normalize(axis);
     float s = sin(angle);
@@ -109,7 +111,7 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
 
 			reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
 
-            reflectVec = rotate(reflectVec,vec3(1.0,0.0,0.0),uTime);
+            reflectVec = rotate(reflectVec,vec3(1.0,0.0,0.0),uTime * speedFactor);
 
 			vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
 
@@ -146,20 +148,35 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
     
     update(){
         if(this.mesh){
-            this.mesh.rotation.y=this.time.elapsed * -0.001;
+            // this.mesh.rotation.y=this.time.elapsed * -0.001;
             if(this.m.userData.shader){
                 this.mesh.material.userData.shader.uniforms.uTime.value = this.time.elapsed * 0.001;
                 // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
             }
         }
         // if(this.mesh){
-        //     if(this.m.userData){
-        //         console.log(this.m.userData)
-        //     }
-        // }
-        // console.log(this.time.elapsed)
-        // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
-    }
-
+            //     if(this.m.userData){
+                //         console.log(this.m.userData)
+                //     }
+                // }
+                // console.log(this.time.elapsed)
+                // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
+            }
+            
+            mouseDownEvent(){
+                if(this.mesh){
+                    // this.mesh.rotation.y=this.time.elapsed * -0.001;
+                    if(this.m.userData.shader){
+                        this.mesh.material.userData.shader.uniforms.speedFactor.value = 4.0;
+                        // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
+                    }
+                }
+                console.log("human mouse down");
+                
+            }
+            mouseUpEvent(){
+                console.log("human mouse up");
+                this.mesh.material.userData.shader.uniforms.speedFactor.value = 1.0;
+            }
     
 } 

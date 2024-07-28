@@ -11,6 +11,7 @@ import Resources from './Utils/Resources.js'
 
 
 import sources from './sources.js'
+import MouseEvents from './Utils/MouseEvents.js'
 
 let instance = null
 
@@ -33,6 +34,7 @@ export default class Experience
 
         // Setup
         this.debug = new Debug()
+        this.mouseEvents= new MouseEvents()
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
@@ -52,6 +54,18 @@ export default class Experience
         {
             this.update()
         })
+
+        this.mouseEvents.on('mouseDown',()=>{
+            this.mouseDownEvents();
+        })
+
+        this.mouseEvents.on('mouseUp',()=>{
+            this.mouseUpEvents();
+        })
+
+        
+
+
     }
 
     resize()
@@ -64,9 +78,15 @@ export default class Experience
     {
         this.camera.update()
         this.world.update()
-        this.renderer.update()
-        
+        this.renderer.update()     
+    }
 
+    mouseDownEvents(){
+        this.world.human.mouseDownEvent();
+    }
+    
+    mouseUpEvents(){
+        this.world.human.mouseUpEvent();
     }
 
     destroy()
