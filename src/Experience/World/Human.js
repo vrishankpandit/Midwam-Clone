@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import Experience from '../Experience.js'
 import vertex from './Shaders/vertex.glsl'
 import fragment from './Shaders/fragment.glsl'
+import { gsap } from "gsap";
+
+
 
 
 
@@ -167,15 +170,34 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
                 if(this.mesh){
                     // this.mesh.rotation.y=this.time.elapsed * -0.001;
                     if(this.m.userData.shader){
-                        this.mesh.material.userData.shader.uniforms.speedFactor.value = 4.0;
-                        // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
+                        console.log( this.mesh.material.userData.shader.uniforms.speedFactor.value)
+                        gsap.to( this.mesh.material.userData.shader.uniforms.speedFactor, {
+                            value: 3.0,
+                            duration: 4,
+                            ease: "power2.inOut"
+                          });
+                          
+                          // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
+                        }
+                    }
+                    // console.log("human mouse down");
+                    
+                }
+                mouseUpEvent(){
+                    if(this.mesh){
+                        // this.mesh.rotation.y=this.time.elapsed * -0.001;
+                        if(this.m.userData.shader){
+                        console.log( this.mesh.material.userData.shader.uniforms.speedFactor.value)
+                        gsap.to( this.mesh.material.userData.shader.uniforms.speedFactor, {
+                            value: 1.0,
+                            duration: 4,
+                            ease: "power2.inOut"
+                          });
+                          
+                        
                     }
                 }
-                console.log("human mouse down");
-                
-            }
-            mouseUpEvent(){
-                console.log("human mouse up");
+                // console.log("human mouse up");
                 this.mesh.material.userData.shader.uniforms.speedFactor.value = 1.0;
             }
     
