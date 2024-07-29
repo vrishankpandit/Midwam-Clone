@@ -83,10 +83,12 @@ export default class Experience
 
     mouseDownEvents(){
         this.world.human.mouseDownEvent();
+        this.camera.mouseDownEvent();
     }
     
     mouseUpEvents(){
         this.world.human.mouseUpEvent();
+        this.camera.mouseUpEvent();
     }
 
     destroy()

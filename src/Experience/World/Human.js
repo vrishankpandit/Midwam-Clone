@@ -4,6 +4,8 @@ import vertex from './Shaders/vertex.glsl'
 import fragment from './Shaders/fragment.glsl'
 import { gsap } from "gsap";
 
+console.log(gsap)
+
 
 
 
@@ -32,6 +34,7 @@ export default class Human{
         this.model.scale.set(0.35,0.35,0.35)
         this.mesh=this.model.children[0]
         this.mesh.geometry.center()
+        this.mesh.position.y=-7
 
         this.mesh.rotation.y=-Math.PI/2;
        
@@ -62,73 +65,73 @@ export default class Human{
                 uniform float uTime;
                 uniform float speedFactor;
                 mat4 rotationMatrix(vec3 axis, float angle) {
-    axis = normalize(axis);
-    float s = sin(angle);
-    float c = cos(angle);
-    float oc = 1.0 - c;
-    
-    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                0.0,                                0.0,                                0.0,                                1.0);
-}
+        axis = normalize(axis);
+        float s = sin(angle);
+        float c = cos(angle);
+        float oc = 1.0 - c;
+        
+        return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
+                    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
+                    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
+                    0.0,                                0.0,                                0.0,                                1.0);
+    }
 
-vec3 rotate(vec3 v, vec3 axis, float angle) {
-	mat4 m = rotationMatrix(axis, angle);
-	return (m * vec4(v, 1.0)).xyz;
-}
-            `
-            + shader.fragmentShader;
-
-            shader.fragmentShader=shader.fragmentShader.replace(
-                `#include <envmap_physical_pars_fragment>`,
+    vec3 rotate(vec3 v, vec3 axis, float angle) {
+        mat4 m = rotationMatrix(axis, angle);
+        return (m * vec4(v, 1.0)).xyz;
+    }
                 `
-                    #if defined( USE_ENVMAP )
+                + shader.fragmentShader;
 
-	vec3 getIBLIrradiance( const in vec3 normal ) {
+                shader.fragmentShader=shader.fragmentShader.replace(
+                    `#include <envmap_physical_pars_fragment>`,
+                    `
+                        #if defined( USE_ENVMAP )
 
-		#if defined( ENVMAP_TYPE_CUBE_UV )
+        vec3 getIBLIrradiance( const in vec3 normal ) {
 
-			vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
+            #if defined( ENVMAP_TYPE_CUBE_UV )
 
-			vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
+                vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
 
-			return PI * envMapColor.rgb * envMapIntensity;
+                vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
 
-		#else
+                return PI * envMapColor.rgb * envMapIntensity;
 
-			return vec3( 0.0 );
+            #else
 
-		#endif
+                return vec3( 0.0 );
 
-	}
+            #endif
 
-	vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
+        }
 
-		#if defined( ENVMAP_TYPE_CUBE_UV )
+        vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
 
-			vec3 reflectVec = reflect( - viewDir, normal );
+            #if defined( ENVMAP_TYPE_CUBE_UV )
 
-			// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
-			reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
+                vec3 reflectVec = reflect( - viewDir, normal );
 
-			reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
+                // Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
+                reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
 
-            reflectVec = rotate(reflectVec,vec3(1.0,0.0,0.0),uTime * speedFactor);
+                reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
 
-			vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
+                reflectVec = rotate(reflectVec,vec3(1.0,0.0,0.0),uTime * (speedFactor)  );
 
-			return envMapColor.rgb * envMapIntensity;
+                vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
 
-		#else
+                return envMapColor.rgb * envMapIntensity;
 
-			return vec3( 0.0 );
+            #else
 
-		#endif
+                return vec3( 0.0 );
 
-	}
+            #endif
 
-#endif
+        }
+
+    #endif
                 `)
 
             
@@ -157,24 +160,17 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
                 // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
             }
         }
-        // if(this.mesh){
-            //     if(this.m.userData){
-                //         console.log(this.m.userData)
-                //     }
-                // }
-                // console.log(this.time.elapsed)
-                // this.mesh.material.uniforms.uTime.value=this.time.elapsed;
             }
             
             mouseDownEvent(){
                 if(this.mesh){
                     // this.mesh.rotation.y=this.time.elapsed * -0.001;
                     if(this.m.userData.shader){
-                        console.log( this.mesh.material.userData.shader.uniforms.speedFactor.value)
+                       
                         gsap.to( this.mesh.material.userData.shader.uniforms.speedFactor, {
                             value: 3.0,
                             duration: 4,
-                            ease: "power2.inOut"
+                            ease: "power1.inOut"
                           });
                           
                           // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
@@ -187,18 +183,16 @@ vec3 rotate(vec3 v, vec3 axis, float angle) {
                     if(this.mesh){
                         // this.mesh.rotation.y=this.time.elapsed * -0.001;
                         if(this.m.userData.shader){
-                        console.log( this.mesh.material.userData.shader.uniforms.speedFactor.value)
+                       
                         gsap.to( this.mesh.material.userData.shader.uniforms.speedFactor, {
-                            value: 1.0,
-                            duration: 4,
-                            ease: "power2.inOut"
+                            value: -1.0,
+                            duration: 2,
+                            ease: "power1.inOut"
                           });
-                          
-                        
+                            
                     }
                 }
-                // console.log("human mouse up");
-                this.mesh.material.userData.shader.uniforms.speedFactor.value = 1.0;
+                
             }
     
 } 

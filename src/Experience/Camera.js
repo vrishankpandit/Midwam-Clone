@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import {gsap} from 'gsap'
 
 export default class Camera
 {
@@ -18,8 +19,8 @@ export default class Camera
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
-        // this.instance.lookAt(new THREE.Vector3(0,0,0));
-        this.instance.position.set(-10, 4, -2)
+        // this.instance.lookAt(new THREE.Vector3(0,8,0));
+        this.instance.position.set(-4, 0, 0)
         this.scene.add(this.instance)
     }
 
@@ -38,5 +39,25 @@ export default class Camera
     update()
     {
         this.controls.update()
+    }
+
+    mouseDownEvent(){
+           gsap.to(this.instance.position,{
+            x:-2.5,
+            duration:2,
+            ease:'power1.inOut'
+        })
+  
+
+    }
+    
+    mouseUpEvent(){
+        gsap.to(this.instance.position,{
+         x:-4,
+         duration:2,
+         ease:'power1.inOut'
+     })
+
+                 
     }
 }
