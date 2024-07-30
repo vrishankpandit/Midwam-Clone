@@ -19,15 +19,15 @@ export default class Camera
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
-        // this.instance.lookAt(new THREE.Vector3(0,8,0));
         this.instance.position.set(-4, 0, 0)
+        this.instance.lookAt(new THREE.Vector3(0,0,0));
         this.scene.add(this.instance)
     }
 
     setControls()
     {
-        this.controls = new OrbitControls(this.instance, this.canvas)
-        this.controls.enableDamping = true
+        // this.controls = new OrbitControls(this.instance, this.canvas)
+        // this.controls.enableDamping = true
     }
 
     resize()
@@ -38,7 +38,7 @@ export default class Camera
 
     update()
     {
-        this.controls.update()
+        // this.controls.update()
     }
 
     mouseDownEvent(){
@@ -58,6 +58,16 @@ export default class Camera
          ease:'power1.inOut'
      })
 
-                 
+     
+    }
+
+    wheelEvents(){
+        console.log("wheel down"); 
+
+        gsap.to(this.instance.position,{
+            y:this.instance.position.y-1.5,
+            duration:1,
+            ease:'power1.inOut'
+        })
     }
 }

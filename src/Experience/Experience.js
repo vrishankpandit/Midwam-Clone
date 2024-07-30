@@ -7,6 +7,7 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import World from './World/World.js'
 import Resources from './Utils/Resources.js'
+import WheelEvents from './Utils/WheelEvents.js'
 
 
 
@@ -34,7 +35,8 @@ export default class Experience
 
         // Setup
         this.debug = new Debug()
-        this.mouseEvents= new MouseEvents()
+        this.mouseEvents = new MouseEvents()
+        this.wheelEvents = new WheelEvents()
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
@@ -63,7 +65,10 @@ export default class Experience
             this.mouseUpEvents();
         })
 
-        
+        this.wheelEvents.on('wheel',(val)=>{
+            
+            this.wheelEvents1();
+        })
 
 
     }
@@ -89,6 +94,10 @@ export default class Experience
     mouseUpEvents(){
         this.world.human.mouseUpEvent();
         this.camera.mouseUpEvent();
+    }
+    
+    wheelEvents1(){
+        this.camera.wheelEvents();
     }
 
     destroy()
