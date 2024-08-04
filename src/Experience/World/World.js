@@ -19,6 +19,7 @@ export default class World
             // Setup
             this.human=new Human();
             this.axesHelper=new Axeshelper();
+            this.experience.camera.scrollTrigger()
             // this.floor = new Floor()
             // this.fox = new Fox()
             // this.environment = new Environment()

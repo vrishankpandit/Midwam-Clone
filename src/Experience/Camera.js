@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {gsap} from 'gsap'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default class Camera
 {
@@ -14,6 +17,8 @@ export default class Camera
 
         this.setInstance()
         this.setControls()
+        
+        
     }
 
     setInstance()
@@ -69,5 +74,71 @@ export default class Camera
             duration:1,
             ease:'power1.inOut'
         })
+    }
+
+    scrollTrigger(){
+        
+        // gsap.defaults({ease:'back.inOut',duration:2});
+
+        const tl=gsap.timeline();
+
+        tl.to(this.instance.position,{
+            y:this.instance.position.y-2.9,
+            duration:5,
+            scrollTrigger:{
+                trigger:'.body2',
+                start:'top center',
+                // end:"+="+window.innerHeight*3,
+                // pin:true,
+                // anticipatePin:1,
+                end:'bottom center',
+                scrub:true,
+                markers:true
+            },
+            onUpdate:()=>{
+                this.instance.needsUpdate=true;
+            },
+        })
+        .to(this.instance.position,{
+            y:this.instance.position.y-3.0,
+            duration:5,
+            scrollTrigger:{
+                trigger:'.body3',
+                start:'top center',
+                // end:"+="+window.innerHeight*3,
+                // pin:true,
+                // anticipatePin:1,
+                end:'bottom center',
+                scrub:true,
+                markers:true
+            },
+            onUpdate:()=>{
+                this.instance.needsUpdate=true;
+            },
+        })
+
+        function onUpdate1(){
+            if(this.instance){
+                console.log(this.instance.position.y);
+                this.instance.needsUpdate=true;
+            }
+            console.log("update");
+        }
+
+        
+
+        // ScrollTrigger.create({
+        //     animation:tl,
+        //     trigger:'.body1',
+        //     start:"top top",
+        //     end:'bottom bottom',
+        //     // scrub:true,
+        //     // pin:true,
+        //     // anticipatePin:1,
+        //     markers:true
+
+        // })
+
+
     }
 }

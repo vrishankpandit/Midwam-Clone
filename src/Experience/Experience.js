@@ -35,15 +35,15 @@ export default class Experience
 
         // Setup
         this.debug = new Debug()
+        this.resources = new Resources(sources)
+        this.scene = new THREE.Scene()
+        this.world = new World()
         this.mouseEvents = new MouseEvents()
         this.wheelEvents = new WheelEvents()
         this.sizes = new Sizes()
         this.time = new Time()
-        this.scene = new THREE.Scene()
-        this.resources = new Resources(sources)
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.world = new World()
 
         // Resize event
         this.sizes.on('resize', () =>
@@ -97,7 +97,7 @@ export default class Experience
     }
     
     wheelEvents1(){
-        this.camera.wheelEvents();
+        // this.camera.wheelEvents();
     }
 
     destroy()

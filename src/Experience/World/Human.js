@@ -154,9 +154,10 @@ export default class Human{
     
     update(){
         if(this.mesh){
-            // this.mesh.rotation.y=this.time.elapsed * -0.001;
+            this.mesh.rotation.y=this.time.elapsed * -0.0005;
             if(this.m.userData.shader){
                 this.mesh.material.userData.shader.uniforms.uTime.value = this.time.elapsed * 0.001;
+            
                 // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
             }
         }
@@ -166,12 +167,14 @@ export default class Human{
                 if(this.mesh){
                     // this.mesh.rotation.y=this.time.elapsed * -0.001;
                     if(this.m.userData.shader){
+                        
                        
                         gsap.to( this.mesh.material.userData.shader.uniforms.speedFactor, {
                             value: 3.0,
                             duration: 4,
                             ease: "power1.inOut"
                           });
+                          
                           
                           // console.log( this.mesh.material.userData.shader.uniforms.uTime.value)
                         }
