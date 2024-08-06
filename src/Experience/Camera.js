@@ -80,64 +80,49 @@ export default class Camera
         
         // gsap.defaults({ease:'back.inOut',duration:2});
 
-        const tl=gsap.timeline();
+        const tl = gsap.timeline();
 
-        tl.to(this.instance.position,{
-            y:this.instance.position.y-2.9,
-            duration:5,
-            scrollTrigger:{
-                trigger:'.body2',
-                start:'top center',
-                // end:"+="+window.innerHeight*3,
-                // pin:true,
-                // anticipatePin:1,
-                end:'bottom center',
-                scrub:true,
-                markers:true
-            },
-            onUpdate:()=>{
-                this.instance.needsUpdate=true;
-            },
+tl.to(this.instance.position, {
+    y:  - 2.9,
+    duration: 10,
+    // scrollTrigger: {
+    //     trigger: '.body2',
+    //     start: 'top center',
+    //     end: 'bottom center',
+    //     scrub: true,
+    //     markers: true
+    // },
+    onUpdate: () => {
+        console.log(this.instance.position.y);
+        },
+    })
+    .to(this.instance.position, {
+        y: - 10.0,
+        duration: 5,
+        // scrollTrigger: {
+        //     trigger: '.body3',
+        //     start: 'top center',
+        //     end: 'bottom center',
+        //     scrub: true,
+        //     markers: true
+        // },
+        onUpdate: () => {
+            console.log(this.instance.position.y);
+        },
+});
+
+        ScrollTrigger.create({
+            animation:tl,
+            trigger:'.body1',
+            start:"top 100px",
+            end:'bottom 100px',
+            scrub:true,
+            // pin:true,
+            // anticipatePin:1,
+            snap:1/3,
+            markers:true
+
         })
-        .to(this.instance.position,{
-            y:this.instance.position.y-3.0,
-            duration:5,
-            scrollTrigger:{
-                trigger:'.body3',
-                start:'top center',
-                // end:"+="+window.innerHeight*3,
-                // pin:true,
-                // anticipatePin:1,
-                end:'bottom center',
-                scrub:true,
-                markers:true
-            },
-            onUpdate:()=>{
-                this.instance.needsUpdate=true;
-            },
-        })
-
-        function onUpdate1(){
-            if(this.instance){
-                console.log(this.instance.position.y);
-                this.instance.needsUpdate=true;
-            }
-            console.log("update");
-        }
-
-        
-
-        // ScrollTrigger.create({
-        //     animation:tl,
-        //     trigger:'.body1',
-        //     start:"top top",
-        //     end:'bottom bottom',
-        //     // scrub:true,
-        //     // pin:true,
-        //     // anticipatePin:1,
-        //     markers:true
-
-        // })
 
 
     }
