@@ -154,7 +154,7 @@ export default class Human{
     
     update(){
         if(this.mesh){
-            this.mesh.rotation.y=this.time.elapsed * -0.0005;
+            // this.mesh.rotation.y=this.time.elapsed * -0.0005;
             if(this.m.userData.shader){
                 this.mesh.material.userData.shader.uniforms.uTime.value = this.time.elapsed * 0.001;
             

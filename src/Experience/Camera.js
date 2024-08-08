@@ -20,11 +20,15 @@ export default class Camera
         
         
     }
+    UpdateCamera() {
+        this.instance.lookAt(new THREE.Vector3(0, 0, 0));
+        this.instance.updateProjectionMatrix();
+    }
 
     setInstance()
     {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
-        this.instance.position.set(-4, 0, 0)
+        this.instance.position.set(0.5, 1, 0)
         this.instance.lookAt(new THREE.Vector3(0,0,0));
         this.scene.add(this.instance)
     }
@@ -82,48 +86,58 @@ export default class Camera
 
         const tl = gsap.timeline();
 
-tl.to(this.instance.position, {
-    y:  - 2.9,
-    duration: 10,
-    // scrollTrigger: {
-    //     trigger: '.body2',
-    //     start: 'top center',
-    //     end: 'bottom center',
-    //     scrub: true,
-    //     markers: true
-    // },
-    onUpdate: () => {
-        console.log(this.instance.position.y);
-        },
-    })
-    .to(this.instance.position, {
-        y: - 10.0,
-        duration: 5,
+    tl.to(this.instance.position, {
+        // y:  - 2.0,
+        x:-4,
+        y:0,
+        duration: 1,
         // scrollTrigger: {
-        //     trigger: '.body3',
+        //     trigger: '.body2',
         //     start: 'top center',
         //     end: 'bottom center',
         //     scrub: true,
         //     markers: true
         // },
-        onUpdate: () => {
-            console.log(this.instance.position.y);
+        onUpdate(self){  
+            // console.log(this.instance.position.y);
+            // this.UpdateCamera();
+            console.log(this.ratio);
         },
-});
-
+    })
+    .to(this.instance.position, {
+        x:-2,    
+        // z: Math.PI,
+        
+        duration: 1,
+        // scrollTrigger: {
+            //     trigger: '.body3',
+            //     start: 'top center',
+            //     end: 'bottom center',
+            //     scrub: true,
+            //     markers: true
+            // },
+            onUpdate: (self) => {
+                console.log(self);
+                this.instance.lookAt(new THREE.Vector3(0,-2,0));
+                this.instance.updateProjectionMatrix();
+            },
+        });
+        
         ScrollTrigger.create({
             animation:tl,
             trigger:'.body1',
-            start:"top 100px",
-            end:'bottom 100px',
+            start:"top top",
+            end:'bottom 500px',
             scrub:true,
-            // pin:true,
+            pin:true,
             // anticipatePin:1,
-            snap:1/3,
+            // snap:1/2,
             markers:true
 
         })
 
 
     }
+
+    
 }
