@@ -51,20 +51,22 @@ export default class Camera
     }
 
     mouseDownEvent(){
-           gsap.to(this.instance.position,{
-            x:-2.5,
+          const newPos=this.instance.position.x+0.5;
+          gsap.to(this.instance.position,{
+              x:newPos,
+              duration:2,
+              ease:'power1.inOut'
+            })
+            
+            
+        }
+        
+        mouseUpEvent(){
+            const newPos=this.instance.position.x-0.5;
+            gsap.to(this.instance.position,{
+            x:newPos,
             duration:2,
             ease:'power1.inOut'
-        })
-  
-
-    }
-    
-    mouseUpEvent(){
-        gsap.to(this.instance.position,{
-         x:-4,
-         duration:2,
-         ease:'power1.inOut'
      })
 
      
