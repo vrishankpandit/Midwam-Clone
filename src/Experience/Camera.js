@@ -52,10 +52,11 @@ export default class Camera
 
     mouseDownEvent(){
           const newPos=this.instance.position.x+0.5;
-          gsap.to(this.instance.position,{
-              x:newPos,
+          gsap.to(this.instance,{
+              fov:25,
               duration:2,
-              ease:'power1.inOut'
+              ease:'power1.inOut',
+            
             })
             
             
@@ -63,10 +64,10 @@ export default class Camera
         
         mouseUpEvent(){
             const newPos=this.instance.position.x-0.5;
-            gsap.to(this.instance.position,{
-            x:newPos,
+            gsap.to(this.instance,{
+            fov:35,
             duration:2,
-            ease:'power1.inOut'
+            ease:'power1.inOut',
      })
 
      
@@ -84,7 +85,7 @@ export default class Camera
 
     scrollTrigger(){
         
-        // gsap.defaults({ease:'back.inOut',duration:2});
+        gsap.defaults({onUpdate:()=>{this.instance.updateProjectionMatrix();}});
 
         const tl = gsap.timeline();
 
@@ -102,7 +103,6 @@ export default class Camera
         // },
         onUpdate:()=>{  
             this.instance.lookAt(new THREE.Vector3(0,0,0));
-            this.instance.updateProjectionMatrix();
             // console.log(this.instance.position.y);
             // this.updateCamera();
             // console.log(tl.progress());
@@ -123,9 +123,9 @@ export default class Camera
             // },
             onUpdate:() => {
                 console.log(tl.progress());
-                const interpolatedPosition = new THREE.Vector3().lerpVectors(new THREE.Vector3(0,0,0), new THREE.Vector3(0,-1,0), (tl.progress()-0.5)*2.0);
+                const interpolatedPosition = new THREE.Vector3().lerpVectors(new THREE.Vector3(0,0,0), new THREE.Vector3(0,-1,0), (tl.progress()-1/2)*2.0);
                 this.instance.lookAt(interpolatedPosition);
-                this.instance.updateProjectionMatrix();
+                
             },
         });
         
