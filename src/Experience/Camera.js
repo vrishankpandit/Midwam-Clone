@@ -20,7 +20,7 @@ export default class Camera
         
         
     }
-    UpdateCamera() {
+    updateCamera() {
         this.instance.lookAt(new THREE.Vector3(0, 0, 0));
         this.instance.updateProjectionMatrix();
     }
@@ -98,14 +98,17 @@ export default class Camera
         //     scrub: true,
         //     markers: true
         // },
-        onUpdate(self){  
+        onUpdate:()=>{  
+            this.instance.lookAt(new THREE.Vector3(0,0,0));
+            this.instance.updateProjectionMatrix();
             // console.log(this.instance.position.y);
-            // this.UpdateCamera();
-            console.log(this.ratio);
-        },
+            // this.updateCamera();
+            // console.log(tl.progress());
+        }
     })
     .to(this.instance.position, {
-        x:-2,    
+        x:-1,    
+        z:-1,
         // z: Math.PI,
         
         duration: 1,
@@ -116,9 +119,10 @@ export default class Camera
             //     scrub: true,
             //     markers: true
             // },
-            onUpdate: (self) => {
-                console.log(self);
-                this.instance.lookAt(new THREE.Vector3(0,-2,0));
+            onUpdate:() => {
+                console.log(tl.progress());
+                const interpolatedPosition = new THREE.Vector3().lerpVectors(new THREE.Vector3(0,0,0), new THREE.Vector3(0,-1,0), (tl.progress()-0.5)*2.0);
+                this.instance.lookAt(interpolatedPosition);
                 this.instance.updateProjectionMatrix();
             },
         });
