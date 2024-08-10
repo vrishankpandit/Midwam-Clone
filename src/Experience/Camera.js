@@ -85,49 +85,64 @@ export default class Camera
 
     scrollTrigger(){
         
-        gsap.defaults({onUpdate:()=>{this.instance.updateProjectionMatrix();}});
-
-        const tl = gsap.timeline();
-
-    tl.to(this.instance.position, {
-        // y:  - 2.0,
-        x:-4,
-        y:0,
-        duration: 1,
-        // scrollTrigger: {
-        //     trigger: '.body2',
-        //     start: 'top center',
-        //     end: 'bottom center',
-        //     scrub: true,
-        //     markers: true
-        // },
-        onUpdate:()=>{  
-            this.instance.lookAt(new THREE.Vector3(0,0,0));
-            // console.log(this.instance.position.y);
-            // this.updateCamera();
-            // console.log(tl.progress());
-        }
-    })
-    .to(this.instance.position, {
-        x:-1,    
-        z:-1,
-        // z: Math.PI,
+        gsap.defaults({
+            onUpdate:()=>{
+                this.instance.updateProjectionMatrix();
+            }
+        });
         
-        duration: 1,
-        // scrollTrigger: {
-            //     trigger: '.body3',
-            //     start: 'top center',
-            //     end: 'bottom center',
-            //     scrub: true,
-            //     markers: true
-            // },
-            onUpdate:() => {
-                console.log(tl.progress());
-                const interpolatedPosition = new THREE.Vector3().lerpVectors(new THREE.Vector3(0,0,0), new THREE.Vector3(0,-1,0), (tl.progress()-1/2)*2.0);
+        const tl = gsap.timeline();
+        
+        tl.to(this.instance.position, {
+            // y:  - 2.0,
+            x:-4,
+            y:0,
+            duration: 1,
+            // scrollTrigger: {
+                //     trigger: '.body2',
+                //     start: 'top center',
+                //     end: 'bottom center',
+                //     scrub: true,
+                //     markers: true
+                // },
+                onUpdate:()=>{  
+                    this.instance.lookAt(new THREE.Vector3(0,0,0));
+                   
+                }
+            })
+            .to(this.instance.position, {
+                x:-1.5,    
+                z:-1,
+                // z: Math.PI,
+                
+                duration: 1,
+                onStart:()=>{
+                    console.log();  
+                  },
+                // scrollTrigger: {
+                    //     trigger: '.body3',
+                    //     start: 'top center',
+                    //     end: 'bottom center',
+                    //     scrub: true,
+                    //     markers: true
+                    // },
+                    onUpdate:() => {
+                const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                                                new THREE.Vector3(0,0,0),
+                                                 new THREE.Vector3(0,-1,0),
+                                                  (tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                 this.instance.lookAt(interpolatedPosition);
                 
             },
-        });
+        })
+        .to(this.instance.position, {
+            y:-1,
+            z:-3,
+            duration:1,
+            onUpdate:()=>{
+                this.instance.lookAt(new THREE.Vector3(0,-1,0));
+            }
+        })
         
         ScrollTrigger.create({
             animation:tl,
