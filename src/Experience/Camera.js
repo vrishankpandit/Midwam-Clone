@@ -93,6 +93,7 @@ export default class Camera
         
         const tl = gsap.timeline();
         
+        
         tl.to(this.instance.position, {
             // y:  - 2.0,
             x:-4,
@@ -116,9 +117,6 @@ export default class Camera
                 // z: Math.PI,
                 
                 duration: 1,
-                onStart:()=>{
-                    console.log();  
-                  },
                 // scrollTrigger: {
                     //     trigger: '.body3',
                     //     start: 'top center',
@@ -127,20 +125,35 @@ export default class Camera
                     //     markers: true
                     // },
                     onUpdate:() => {
-                const interpolatedPosition = new THREE.Vector3().lerpVectors(
-                                                new THREE.Vector3(0,0,0),
-                                                 new THREE.Vector3(0,-1,0),
-                                                  (tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                this.instance.lookAt(interpolatedPosition);
-                
-            },
-        })
-        .to(this.instance.position, {
-            y:-1,
-            z:-3,
-            duration:1,
-            onUpdate:()=>{
-                this.instance.lookAt(new THREE.Vector3(0,-1,0));
+                        const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                            new THREE.Vector3(0,0,0),
+                            new THREE.Vector3(0,-1,0),
+                            (tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                            this.instance.lookAt(interpolatedPosition);
+                            console.log(interpolatedPosition.y);
+                            
+                            
+                        },
+                    })
+                    .to(this.instance.position, {
+                        x:1,
+                        y:-1,
+                        z:-3,
+                        duration:1,
+                        onStart:()=>{
+                            this.instance.lookAt( new THREE.Vector3(0,-1,0));  
+                            this.instance.updateProjectionMatrix();
+                          },
+                        onUpdate:()=>{
+                            const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                                new THREE.Vector3(0,-1,0),
+                                new THREE.Vector3(0,-2,0),
+                                (tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                this.instance.lookAt(interpolatedPosition);
+                                // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                console.log(interpolatedPosition.y);
+
+                              
             }
         })
         
