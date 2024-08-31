@@ -175,8 +175,8 @@ export default class Camera
                             })
                         .to(this.instance.position, {
                             x:-1,
-                            y:-4,
-                            z: 3,
+                            y:-3,
+                            z: 4,
                             duration:1,
                             onStart:()=>{
                                 this.instance.lookAt( new THREE.Vector3(0,-2,0));  
@@ -187,6 +187,27 @@ export default class Camera
                                     new THREE.Vector3(0,-2,0),
                                     new THREE.Vector3(0,-3,0),
                                     (tl.progress()-4.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                    this.instance.lookAt(interpolatedPosition);
+                                    // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                    console.log(interpolatedPosition.y);
+                                    console.log("instance position z "+this.instance.position.z);               
+                                }
+                            }
+                        )
+                        .to(this.instance.position, {
+                            x:-4,
+                            y:-4,
+                            z: -2,
+                            duration:1,
+                            onStart:()=>{
+                                this.instance.lookAt( new THREE.Vector3(0,-3,0));  
+                                this.instance.updateProjectionMatrix();
+                            },
+                            onUpdate:()=>{
+                                const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                                    new THREE.Vector3(0,-3,0),
+                                    new THREE.Vector3(0,-4,0),
+                                    (tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                     this.instance.lookAt(interpolatedPosition);
                                     // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                     console.log(interpolatedPosition.y);

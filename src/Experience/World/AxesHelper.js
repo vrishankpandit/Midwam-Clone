@@ -13,5 +13,11 @@ export default class Axeshelper{
     addModel(){
         this.axesHelper = new THREE.AxesHelper( 5 );
         this.scene.add( this.axesHelper );
+
+        const size = 10;
+        const divisions = 10;
+
+        this.gridHelper = new THREE.GridHelper( size, divisions );
+        this.scene.add( this.gridHelper );
     }
 }
