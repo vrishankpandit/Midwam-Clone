@@ -4,6 +4,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {gsap} from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+
+
+
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default class Camera
@@ -14,7 +18,8 @@ export default class Camera
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
-
+        this.delta=this.experience.time.delta
+        
         this.setInstance()
         this.setControls()
         
@@ -45,13 +50,32 @@ export default class Camera
         this.instance.updateProjectionMatrix()
     }
 
+
+    oscillateCameraPosition() {
+        const oscillationIntensity = 0.1; // Adjust the intensity as needed
+        const frequency = 0.005; // Adjust the frequency as needed
+
+        // Calculate the displacement using a sine wave
+        const displacement = Math.sin((Math.random()-0.5)*2.0*this.delta * frequency) * oscillationIntensity;
+
+        // Apply the displacement to the camera position
+        
+        const lerp=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
+        this.instance.position.lerp(lerp, Math.sin(this.delta*0.01));
+        
+        // this.instance.position.y += displacement;
+        // this.instance.position.z += displacement;
+
+    }
+
+
     update()
     {
         // this.controls.update()
+        this.oscillateCameraPosition()
     }
 
     mouseDownEvent(){
-          const newPos=this.instance.position.x+0.5;
           gsap.to(this.instance,{
               fov:25,
               duration:2,
@@ -63,7 +87,6 @@ export default class Camera
         }
         
         mouseUpEvent(){
-            const newPos=this.instance.position.x-0.5;
             gsap.to(this.instance,{
             fov:35,
             duration:2,
@@ -84,6 +107,7 @@ export default class Camera
     }
 
     scrollTrigger(){
+        // console.log(this.experience.renderer);
         
         gsap.defaults({
             onUpdate:()=>{
@@ -108,7 +132,6 @@ export default class Camera
                 // },
                 onUpdate:()=>{  
                     this.instance.lookAt(new THREE.Vector3(0,0,0));
-                   
                 }
             })
             .to(this.instance.position, {

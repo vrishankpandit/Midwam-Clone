@@ -97,11 +97,9 @@ export default class Renderer
             })
             this.debug.ui.add(this.unrealBloomPass,'enabled')
             this.debug.ui.add(this.holoeffect.uniforms.progress,'value').min(0).max(1).step(0.001).name('Hologram Effect').onChange((val)=>{
-                this.holoeffect.uniforms.progress.value=val;
+                this.holoeffect.uniforms.progress.value = val;
             })
         }
-        
-
     }
 
     resize()
