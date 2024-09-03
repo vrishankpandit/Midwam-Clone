@@ -107,6 +107,8 @@ export default class Experience
         mouseMoveEvents(){
             // console.log(this.mouseEvents)
             this.camera.mouseMoveEvents();
+            // console.log(this.mouseEvents.event)
+
         }
 
         destroy()

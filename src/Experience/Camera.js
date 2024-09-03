@@ -4,6 +4,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {gsap} from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Time from './Utils/Time.js'
+// import { lerp } from 'three/src/math/MathUtils.js';
+// import MouseEvents from './Utils/MouseEvents.js'
+
 
 
 
@@ -22,6 +25,10 @@ export default class Camera
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
         this.mouseEvents = this.experience.mouseEvents
+
+        this.cursor = {}
+        this.cursor.x = 0
+        this.cursor.y = 0
 
         
         this.setInstance()
@@ -60,24 +67,15 @@ export default class Camera
         const frequency = 0.01; // Adjust the frequency as needed
 
         // Calculate the displacement using a sine wave
-        const displacement = Math.sin(((Math.random()-0.5)*2) * (3.14/2)*frequency) * oscillationIntensity;
+        const displacement = Math.sin(((Math.random()-0.5)*2) * (3.14/2)*frequency * (this.time.delta/16)) * oscillationIntensity;
         // Apply the displacement to the camera position
         
-        let lerp=0;
+        let lerp1=0;
         
-        lerp=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
-        // for(let i=0;i<100;i++){
-            //     console.log(i/100);
-            // }
-            this.instance.position.lerp(lerp, (this.time.elapsed/1000)%1);
-            // console.log(this.instance.position);
-            // console.log((this.time.elapsed/1000)%1);
-            // console.log("finish")
-        
+        lerp1=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
 
-        
-        // this.instance.position.y += displacement;
-        // this.instance.position.z += displacement;
+            this.instance.position.lerp(lerp1, (this.time.elapsed/1000)%1);
+
 
     }
 
@@ -120,9 +118,19 @@ export default class Camera
     }
 
     mouseMoveEvents(){
-    //    console.log(this.)
-        console.log(this.mouseEvents)
 
+        
+        // console.log(this.mouseEvents.event)
+        this.cursor.x= (this.mouseEvents.event.clientX / this.sizes.width - 0.5);
+        this.cursor.y = (-(this.mouseEvents.event.clientY / this.sizes.height - 0.5));
+        console.log(this.cursor.x,this.cursor.y);
+
+
+     
+        let lerp2=0;
+        
+        lerp2=new THREE.Vector3(this.instance.position.x,this.instance.position.y+(this.cursor.y*0.05),this.instance.position.z+(this.cursor.x*0.1));
+        this.instance.position.lerp(lerp2, (this.time.delta/16)*0.1);
     }
 
     scrollTrigger(){
