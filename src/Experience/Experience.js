@@ -44,69 +44,78 @@ export default class Experience
         this.time = new Time()
         this.camera = new Camera()
         this.renderer = new Renderer()
-
+        
         // Resize event
         this.sizes.on('resize', () =>
         {
             this.resize()
         })
-
+        
         // Time tick event
         this.time.on('tick', () =>
-        {
-            this.update()
-        })
-
-        this.mouseEvents.on('mouseDown',()=>{
-            this.mouseDownEvents();
-        })
-
-        this.mouseEvents.on('mouseUp',()=>{
-            this.mouseUpEvents();
-        })
-
-        this.wheelEvents.on('wheel',(val)=>{
+            {
+                this.update()
+            })
             
-            this.wheelEvents1();
-        })
+            this.mouseEvents.on('mouseDown',()=>{
+                this.mouseDownEvents();
+            })
+            
+            this.mouseEvents.on('mouseUp',()=>{
+                this.mouseUpEvents();
+            })
+            
+            this.wheelEvents.on('wheel',(val)=>{
+                
+                this.wheelEvents1();
+            })
+            
+            this.mouseEvents.on('mouseMove',()=>{
+                this.mouseMoveEvents();
+            })
+            
+            
+        }
+        
+        resize()
+        {
+            this.camera.resize()
+            this.renderer.resize()
+        }
+        
+        update()
+        {
+            this.camera.update()
+            this.world.update()
+            this.renderer.update()     
+        }
+        
+        mouseDownEvents(){
+            this.world.human.mouseDownEvent();
+            this.camera.mouseDownEvent();
+        }
+        
+        mouseUpEvents(){
+            this.world.human.mouseUpEvent();
+            this.camera.mouseUpEvent();
+        }
+        
+        wheelEvents1(){
+            // this.camera.wheelEvents();
+        }
+        
+        mouseMoveEvents(){
+            // console.log(this.mouseEvents)
+            this.camera.mouseMoveEvents();
+        }
 
-
-    }
-
-    resize()
-    {
-        this.camera.resize()
-        this.renderer.resize()
-    }
-
-    update()
-    {
-        this.camera.update()
-        this.world.update()
-        this.renderer.update()     
-    }
-
-    mouseDownEvents(){
-        this.world.human.mouseDownEvent();
-        this.camera.mouseDownEvent();
-    }
-    
-    mouseUpEvents(){
-        this.world.human.mouseUpEvent();
-        this.camera.mouseUpEvent();
-    }
-    
-    wheelEvents1(){
-        // this.camera.wheelEvents();
-    }
-
-    destroy()
-    {
-        this.sizes.off('resize')
-        this.time.off('tick')
-
-        // Traverse the whole scene
-        this.scene.traverse((child) =>
+        destroy()
+        {
+            this.sizes.off('resize')
+            this.time.off('tick')
+            
+            // Traverse the whole scene
+            this.scene.traverse((child) =>
         {
             // Test if it's a mesh
             if(child instanceof THREE.Mesh)

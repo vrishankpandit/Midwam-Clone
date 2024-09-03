@@ -6,6 +6,7 @@ export default class MouseEvents extends EventEmitter{
             super()
             this.width = window.innerWidth
             this.height = window.innerHeight
+            this.event= null;
 
             //onClickEvent
             window.addEventListener('mousedown',(val)=>{
@@ -19,5 +20,12 @@ export default class MouseEvents extends EventEmitter{
                 console.log("mouseUp");
                 this.trigger('mouseUp');
             })
+
+            window.addEventListener('mousemove',(event)=>{
+                this.event=event;
+                // console.log(this.event)
+                this.trigger('mouseMove');
+            })
+            
         }
 }

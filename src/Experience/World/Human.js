@@ -4,7 +4,7 @@ import vertex from './Shaders/vertex.glsl'
 import fragment from './Shaders/fragment.glsl'
 import { gsap } from "gsap";
 
-console.log(gsap)
+// console.log(gsap)
 
 
 
@@ -23,7 +23,7 @@ export default class Human{
         
 
         this.instance=this.resources.items.humanModel
-        console.log(this.instance)
+        // console.log(this.instance)
         this.addModel()
         this.setMaterial()
         
@@ -38,7 +38,7 @@ export default class Human{
 
         this.mesh.rotation.y=-Math.PI/2;
        
-        console.log(this.mesh)  
+        // console.log(this.mesh)  
         this.scene.add(this.model)
     }
 

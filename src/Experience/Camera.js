@@ -21,6 +21,8 @@ export default class Camera
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
+        this.mouseEvents = this.experience.mouseEvents
+
         
         this.setInstance()
         this.setControls()
@@ -115,6 +117,12 @@ export default class Camera
             duration:1,
             ease:'power1.inOut'
         })
+    }
+
+    mouseMoveEvents(){
+    //    console.log(this.)
+        console.log(this.mouseEvents)
+
     }
 
     scrollTrigger(){
