@@ -3,6 +3,8 @@ import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {gsap} from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Time from './Utils/Time.js'
+
 
 
 
@@ -15,10 +17,10 @@ export default class Camera
     constructor()
     {
         this.experience = new Experience()
+        this.time=new Time()
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
-        this.delta=this.experience.time.delta
         
         this.setInstance()
         this.setControls()
@@ -53,15 +55,24 @@ export default class Camera
 
     oscillateCameraPosition() {
         const oscillationIntensity = 0.1; // Adjust the intensity as needed
-        const frequency = 0.005; // Adjust the frequency as needed
+        const frequency = 0.01; // Adjust the frequency as needed
 
         // Calculate the displacement using a sine wave
-        const displacement = Math.sin((Math.random()-0.5)*2.0*this.delta * frequency) * oscillationIntensity;
-
+        const displacement = Math.sin(((Math.random()-0.5)*2) * (3.14/2)*frequency) * oscillationIntensity;
         // Apply the displacement to the camera position
         
-        const lerp=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
-        this.instance.position.lerp(lerp, Math.sin(this.delta*0.01));
+        let lerp=0;
+        
+        lerp=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
+        // for(let i=0;i<100;i++){
+            //     console.log(i/100);
+            // }
+            this.instance.position.lerp(lerp, (this.time.elapsed/1000)%1);
+            // console.log(this.instance.position);
+            // console.log((this.time.elapsed/1000)%1);
+            // console.log("finish")
+        
+
         
         // this.instance.position.y += displacement;
         // this.instance.position.z += displacement;
