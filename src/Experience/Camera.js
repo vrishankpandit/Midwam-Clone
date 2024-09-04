@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {gsap} from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Time from './Utils/Time.js'
+import { clamp } from 'three/src/math/MathUtils.js';
 // import { lerp } from 'three/src/math/MathUtils.js';
 // import MouseEvents from './Utils/MouseEvents.js'
 
@@ -136,9 +137,11 @@ export default class Camera
     }
 
     holoeffectEnable(value){
+        // console.log(value)
         // console.log(this.experience.renderer.holoeffect.uniforms.progress.value)
-        console.log((value)/4);
-        this.experience.renderer.holoeffect.uniforms.progress.value = ((value)/4);
+        console.log(clamp((value/4),0,1));
+
+        this.experience.renderer.holoeffect.uniforms.progress.value = clamp((value/4),0,1);
     }
 
     scrollTrigger(){
@@ -210,7 +213,7 @@ export default class Camera
                                 this.instance.lookAt(interpolatedPosition);
                                 // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                 // console.log(interpolatedPosition.x,interpolatedPosition.y,interpolatedPosition.z);               
-                                this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                this.holoeffectEnable((tl.progress()-2/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                             }
                         })
                         .to(this.instance.position, {
@@ -230,7 +233,7 @@ export default class Camera
                                     this.instance.lookAt(interpolatedPosition);
                                     // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                     // console.log(interpolatedPosition.x,interpolatedPosition.y);               
-                                    this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                    this.holoeffectEnable(((tl.progress()-3/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length)+1);
                                 }
                             })
                             .to(this.instance.position, {
@@ -246,9 +249,9 @@ export default class Camera
                                     const interpolatedPosition = new THREE.Vector3().lerpVectors(
                                         new THREE.Vector3(0,-2,0),
                                         new THREE.Vector3(0,-3,0),
-                                        (tl.progress()-4.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        ((tl.progress()-4.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length));
                                         this.instance.lookAt(interpolatedPosition);
-                                        this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        this.holoeffectEnable(((tl.progress()-4/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length)+2);
                                         // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                         // console.log(interpolatedPosition.y);
                                         // console.log("instance position z "+this.instance.position.z);               
@@ -271,7 +274,9 @@ export default class Camera
                                         (tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                         this.instance.lookAt(interpolatedPosition);
                                         // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                        this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        this.holoeffectEnable(((tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length)+3);
+                                        // console.log((tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length)
+                                        // console.log(tl.progress()-5.0/tl.getChildren(true,true,false).length)
                                         // console.log(interpolatedPosition.y);
                                         // console.log("instance position z "+this.instance.position.z);               
                                     }
