@@ -74,7 +74,8 @@ export default class Camera
         
         lerp1=new THREE.Vector3(this.instance.position.x+displacement,this.instance.position.y+displacement,this.instance.position.z+displacement);
 
-            this.instance.position.lerp(lerp1, (this.time.elapsed/1000)%1);
+        this.instance.position.lerp(lerp1, (this.time.elapsed/1000)%1);
+        // this.instance.updateProjectionMatrix()
 
 
     }
@@ -123,7 +124,7 @@ export default class Camera
         // console.log(this.mouseEvents.event)
         this.cursor.x= (this.mouseEvents.event.clientX / this.sizes.width - 0.5);
         this.cursor.y = (-(this.mouseEvents.event.clientY / this.sizes.height - 0.5));
-        console.log(this.cursor.x,this.cursor.y);
+        // console.log(this.cursor.x,this.cursor.y);
 
 
      
@@ -131,10 +132,17 @@ export default class Camera
         
         lerp2=new THREE.Vector3(this.instance.position.x,this.instance.position.y+(this.cursor.y*0.05),this.instance.position.z+(this.cursor.x*0.1));
         this.instance.position.lerp(lerp2, (this.time.delta/16)*0.1);
+        
+    }
+
+    holoeffectEnable(value){
+        // console.log(this.experience.renderer.holoeffect.uniforms.progress.value)
+        console.log((value)/4);
+        this.experience.renderer.holoeffect.uniforms.progress.value = ((value)/4);
     }
 
     scrollTrigger(){
-        // console.log(this.experience.renderer);
+        console.log(this.experience.renderer);
         
         gsap.defaults({
             onUpdate:()=>{
@@ -180,8 +188,8 @@ export default class Camera
                             new THREE.Vector3(0,-1,0),
                             (tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                             this.instance.lookAt(interpolatedPosition);
-                            console.log(interpolatedPosition.y);
                             
+                            // console.log((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                             
                         },
                     })
@@ -201,7 +209,8 @@ export default class Camera
                                 (tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                 this.instance.lookAt(interpolatedPosition);
                                 // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                console.log(interpolatedPosition.x,interpolatedPosition.y,interpolatedPosition.z);               
+                                // console.log(interpolatedPosition.x,interpolatedPosition.y,interpolatedPosition.z);               
+                                this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                             }
                         })
                         .to(this.instance.position, {
@@ -220,67 +229,70 @@ export default class Camera
                                     (tl.progress()-3.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                     this.instance.lookAt(interpolatedPosition);
                                     // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                    console.log(interpolatedPosition.x,interpolatedPosition.y);               
+                                    // console.log(interpolatedPosition.x,interpolatedPosition.y);               
+                                    this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
                                 }
                             })
-                        .to(this.instance.position, {
-                            x:-1,
-                            y:-3,
-                            z: 4,
-                            duration:1,
-                            onStart:()=>{
-                                this.instance.lookAt( new THREE.Vector3(0,-2,0));  
-                                this.instance.updateProjectionMatrix();
-                            },
-                            onUpdate:()=>{
-                                const interpolatedPosition = new THREE.Vector3().lerpVectors(
-                                    new THREE.Vector3(0,-2,0),
-                                    new THREE.Vector3(0,-3,0),
-                                    (tl.progress()-4.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                    this.instance.lookAt(interpolatedPosition);
-                                    // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                    console.log(interpolatedPosition.y);
-                                    console.log("instance position z "+this.instance.position.z);               
+                            .to(this.instance.position, {
+                                x:-1,
+                                y:-3,
+                                z: 4,
+                                duration:1,
+                                onStart:()=>{
+                                    this.instance.lookAt( new THREE.Vector3(0,-2,0));  
+                                    this.instance.updateProjectionMatrix();
+                                },
+                                onUpdate:()=>{
+                                    const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                                        new THREE.Vector3(0,-2,0),
+                                        new THREE.Vector3(0,-3,0),
+                                        (tl.progress()-4.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        this.instance.lookAt(interpolatedPosition);
+                                        this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        // console.log(interpolatedPosition.y);
+                                        // console.log("instance position z "+this.instance.position.z);               
+                                    }
                                 }
-                            }
-                        )
-                        .to(this.instance.position, {
-                            x:-4,
-                            y:-4,
-                            z: -2,
-                            duration:1,
-                            onStart:()=>{
-                                this.instance.lookAt( new THREE.Vector3(0,-3,0));  
-                                this.instance.updateProjectionMatrix();
-                            },
-                            onUpdate:()=>{
-                                const interpolatedPosition = new THREE.Vector3().lerpVectors(
-                                    new THREE.Vector3(0,-3,0),
-                                    new THREE.Vector3(0,-4,0),
-                                    (tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                    this.instance.lookAt(interpolatedPosition);
-                                    // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
-                                    console.log(interpolatedPosition.y);
-                                    console.log("instance position z "+this.instance.position.z);               
+                            )
+                            .to(this.instance.position, {
+                                x:-4,
+                                y:-4,
+                                z: -2,
+                                duration:1,
+                                onStart:()=>{
+                                    this.instance.lookAt( new THREE.Vector3(0,-3,0));  
+                                    this.instance.updateProjectionMatrix();
+                                },
+                                onUpdate:()=>{
+                                    const interpolatedPosition = new THREE.Vector3().lerpVectors(
+                                        new THREE.Vector3(0,-3,0),
+                                        new THREE.Vector3(0,-4,0),
+                                        (tl.progress()-5.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        this.instance.lookAt(interpolatedPosition);
+                                        // console.log((tl.progress()-2.0/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        this.holoeffectEnable((tl.progress()-1/tl.getChildren(true,true,false).length)*tl.getChildren(true,true,false).length);
+                                        // console.log(interpolatedPosition.y);
+                                        // console.log("instance position z "+this.instance.position.z);               
+                                    }
                                 }
-                            }
-                )
-        
-        ScrollTrigger.create({
-            animation:tl,
-            trigger:'.body1',
-            start:"top top",
-            end:'bottom 500px',
-            scrub:true,
-            pin:true,
-            // anticipatePin:1,
-            // snap:1/2,
-            markers:true
-
-        })
-
-
-    }
-
-    
-}
+                            )
+                            
+                            ScrollTrigger.create({
+                                animation:tl,
+                                trigger:'.body1',
+                                start:"top top",
+                                end:'bottom 500px',
+                                scrub:true,
+                                pin:true,
+                                // anticipatePin:1,
+                                // snap:1/2,
+                                markers:true
+                                
+                            })
+                            
+                            
+                        }
+                        
+                        
+                    }
