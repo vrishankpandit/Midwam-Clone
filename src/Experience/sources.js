@@ -9,6 +9,11 @@ export default [
         name:'envMap',
         type:'texture',
         path:'textures/environmentMap/environment-map.jpg'
+    },
+    {
+        name:'shapes',
+        type:'gltfModel',
+        path:'models/MidwamAssets/shapes.glb'
     }
     // {
     //     name: 'environmentMapTexture',

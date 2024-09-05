@@ -23,7 +23,7 @@ export default class Human{
         
 
         this.instance=this.resources.items.humanModel
-        // console.log(this.instance)
+        
         this.addModel()
         this.setMaterial()
         
