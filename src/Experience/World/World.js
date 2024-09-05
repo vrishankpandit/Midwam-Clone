@@ -2,6 +2,7 @@ import Experience from '../Experience.js'
 import Axeshelper from './AxesHelper.js'
 import Environment from './Environment.js'
 import Human from './Human.js'
+import Shapes from './Shapes.js'
 // import Floor from './Floor.js'
 // import Fox from './Fox.js'
 
@@ -18,6 +19,7 @@ export default class World
         {
             // Setup
             this.human=new Human();
+            this.shapes=new Shapes();
             this.axesHelper=new Axeshelper();
             this.experience.camera.scrollTrigger()
             // this.floor = new Floor()
