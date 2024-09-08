@@ -52,8 +52,8 @@ export default class Camera
 
     setControls()
     {
-        this.controls = new OrbitControls(this.instance, this.canvas)
-        this.controls.enableDamping = true
+        // this.controls = new OrbitControls(this.instance, this.canvas)
+        // this.controls.enableDamping = true
     }
 
     resize()
@@ -84,7 +84,7 @@ export default class Camera
 
     update()
     {
-        this.controls.update()
+        // this.controls.update()
         this.oscillateCameraPosition()
     }
 
