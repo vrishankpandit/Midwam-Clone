@@ -89,22 +89,22 @@ export default class Camera
     }
 
     mouseDownEvent(){
-          gsap.to(this.instance,{
-              fov:25,
-              duration:2,
-              ease:'power1.inOut',
+    //       gsap.to(this.instance,{
+    //           fov:25,
+    //           duration:2,
+    //           ease:'power1.inOut',
             
-            })
+    //         })
             
             
-        }
+    //     }
         
-        mouseUpEvent(){
-            gsap.to(this.instance,{
-            fov:35,
-            duration:2,
-            ease:'power1.inOut',
-     })
+    //     mouseUpEvent(){
+    //         gsap.to(this.instance,{
+    //         fov:35,
+    //         duration:2,
+    //         ease:'power1.inOut',
+    //  })
 
      
     }

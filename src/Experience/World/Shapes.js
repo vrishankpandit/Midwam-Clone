@@ -20,7 +20,7 @@ export default class Shapes{
         this.model=this.instance.scene;
         this.model.scale.set(0.55,0.55,0.55)
         this.model.rotation.x=-Math.PI/10;
-        this.model.position.set(9,-8,4)
+        this.model.position.set(9,-7.19,7.052)
         this.scene.add(this.model)
 
         if(this.debug.active){
@@ -34,8 +34,8 @@ export default class Shapes{
             this.debug.ui
             .add(this.model.position,'y')
             .name('PositionY')
-            .min(0)
-            .max(20)
+            .min(-20)
+            .max(5)
             .step(0.001)
 
             this.debug.ui
