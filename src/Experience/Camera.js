@@ -89,22 +89,22 @@ export default class Camera
     }
 
     mouseDownEvent(){
-    //       gsap.to(this.instance,{
-    //           fov:25,
-    //           duration:2,
-    //           ease:'power1.inOut',
+          gsap.to(this.instance,{
+              fov:25,
+              duration:2,
+              ease:'power1.inOut',
             
-    //         })
+            })
             
             
-    //     }
+        }
         
-    //     mouseUpEvent(){
-    //         gsap.to(this.instance,{
-    //         fov:35,
-    //         duration:2,
-    //         ease:'power1.inOut',
-    //  })
+        mouseUpEvent(){
+            gsap.to(this.instance,{
+            fov:35,
+            duration:2,
+            ease:'power1.inOut',
+     })
 
      
     }
@@ -131,7 +131,7 @@ export default class Camera
      
         let lerp2=0;
         
-        lerp2=new THREE.Vector3(this.instance.position.x,this.instance.position.y+(this.cursor.y*0.05),this.instance.position.z+(this.cursor.x*0.1));
+        lerp2=new THREE.Vector3(this.instance.position.x,this.instance.position.y+(this.cursor.y*0.05*1.5),this.instance.position.z+(this.cursor.x*0.1*1.5));
         this.instance.position.lerp(lerp2, (this.time.delta/16)*0.1);
         
     }
